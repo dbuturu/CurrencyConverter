@@ -1,15 +1,3 @@
-/* import idb from 'idb'
-
-function openDatabase() {
-  if (!navigator.serviceWorker) return Promise.resolve()
-
-  return idb.open('convertCurrency', 1, function (upgradeDb) {
-      let store = upgradeDb.createObjectStore('rates', {
-      keyPath: 'id'
-    })
-  })
-} */
-
 function registerServiceWorker() {
   if (!navigator.serviceWorker) return
 
