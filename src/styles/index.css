@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  background: #505050;
+  display: grid;
+  grid-template-rows: minmax(10vh, 20vh) minmax(43vh, 8fr) minmax(47vh, 9fr) minmax(max-content, max-content);
+  grid-template-columns: 7fr 2fr;
+  grid-template-areas: "appBar appBar" "body body" "body body" "footer footer";
+  grid-gap: 1px;
+}
+
+.title {
+  text-align: left;
+  margin: 0.5rem;
+  display: block
+}
+
+.appBar {
+  color: #ffffff;
+  background-color: #0000ff;
+  z-index: 1;
+  min-height: 2.5vh;
+  grid-area: appBar
+}
+
+.body {
+  background: #ffffff;
+  padding: 2.5rem 10vw;
+  grid-gap: 1rem;
+  grid-area: body
+}
+
+.footer {
+  background: #ffffff;
+  z-index: 1;
+  grid-area: footer;
+  min-height: 5vh;
+}
+
+input,
+select{
+  min-width: 11rem;
+  max-width: 40vw;
+  padding: 0.5rem;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box
+}
+
+button{
+  min-width: 11rem;
+  max-width: 40vw;
+  background-color: #2818b6;
+  color: #ffffff;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+  vertical-align: middle;
+  transition-duration: 1s
+}
+
+button.active:focus,
+button:active:focus,
+button:focus {
+  outline: dotted thin;
+  outline: -webkit-focus-ring-color auto 5px;
+  outline-offset: -2px;
+  background: #2818b6
+}
+
+button:focus,
+button:hover {
+  color: #333
+}
+
+button:active{
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125)
+}
+
+button:hover{
+  background: #7c89ff;
+  color: #000;
+  border: none;
+  border-radius: 2px;
+  will-change: box-shadow, transform;
+  -webkit-transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+  transition: box-shadow .2s cubic-bezier(.4, 0, 1, 1), background-color .2s cubic-bezier(.4, 0, .2, 1), color .2s cubic-bezier(.4, 0, .2, 1);
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 1px 2px rgba(0, 0, 0, .24)
+}
