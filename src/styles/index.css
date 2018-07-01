@@ -46,7 +46,13 @@ body {
   text-align: center;
 }
 
+output{
+  display: block;
+  height: 2rem;
+}
+
 input,
+output,
 select{
   min-width: 11rem;
   max-width: 40vw;

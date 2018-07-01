@@ -1,4 +1,4 @@
-import idb from 'idb'
+/* import idb from 'idb'
 
 function openDatabase() {
   if (!navigator.serviceWorker) return Promise.resolve()
@@ -6,6 +6,60 @@ function openDatabase() {
   return idb.open('convertCurrency', 1, function (upgradeDb) {
       let store = upgradeDb.createObjectStore('rates', {
       keyPath: 'id'
+    })
+  })
+} */
+
+function registerServiceWorker() {
+  if (!navigator.serviceWorker) return
+
+  navigator.serviceWorker.register('sw.js',{scope:'src/'})
+    .then(reg => {
+      if (!navigator.serviceWorker.controller) return   
+
+      if (reg.waiting) {
+        updateReady(reg.waiting)
+        return
+      }
+
+      if (reg.installing) {
+        trackInstalling(reg.installing)
+        return
+      }
+
+      reg.addEventListener('updatefound', function () {
+        trackInstalling(reg.installing)
+      })
+    }).catch(function (error) {
+      console.log('Service worker registration failed:', error);
+    });
+
+  let refreshing
+  navigator.serviceWorker.addEventListener('controllerchange', function () {
+    if (refreshing) return
+    window.location.reload()
+    refreshing = true
+  })
+}
+registerServiceWorker()
+
+function trackInstalling(worker) {
+  worker.addEventListener('statechange', function () {
+    if (worker.state == 'installed') {
+      updateReady(worker)
+    }
+  })
+}
+
+function updateReady(worker) {
+  let toast = this._toastsView.show('New version available', {
+      buttons: ['refresh', 'dismiss']
+    })
+
+  toast.answer.then(function (answer) {
+    if (answer != 'refresh') return
+    worker.postMessage({
+      action: 'skipWaiting'
     })
   })
 }
@@ -16,7 +70,7 @@ async function convertCurrency(amount, fromCurrency, toCurrency) {
 
   fromCurrency = encodeURIComponent(fromCurrency)
   toCurrency = encodeURIComponent(toCurrency)
-  var query = `${fromCurrency}_${toCurrency}`
+  let query = `${fromCurrency}_${toCurrency}`
 
   const url = `https://free.currencyconverterapi.com/api/v5/convert?q=${query}&compact=y`
 
@@ -45,8 +99,8 @@ async function setCurrency(fromCurrency,toCurrency){
     let option = document.createElement("option")
     let option2
     option.text = (element.currencySymbol)?
-      `${element.currencyName} ${element.currencySymbol}`:`
-      ${element.currencyName}`
+      `${element.currencyName} ${element.currencySymbol}`:
+      `${element.currencyName}`
     option.setAttribute('value',element.id)
     option2 = option.cloneNode(true)
     fromCurrency.add(option)
@@ -64,13 +118,14 @@ addEventListener('load',()=>{
   const fromCurrency = document.querySelector('#firstCurrency')
   const toCurrency = document.querySelector('#secondCurrency')
   const submit = document.querySelector('#submit')
+  const result = document.querySelector('output#result')
   setCurrency(fromCurrency,toCurrency)
 
   if(isInPage(submit)){
-    submit.addEventListener("keyup", function(event) {
-      event.preventDefault();
+    submit.addEventListener("keyup", event=>{
+      event.preventDefault()
       if (event.keyCode === 13) {
-        document.getElementById("myBtn").click();
+        submit.click()
       }
     })
     submit.addEventListener('click', async ()=>{
@@ -79,6 +134,7 @@ addEventListener('load',()=>{
         fromCurrency.options[fromCurrency.selectedIndex].value,
         toCurrency.options[toCurrency.selectedIndex].value
       )
+      result.innerHTML = ans
     })
   }
 })
